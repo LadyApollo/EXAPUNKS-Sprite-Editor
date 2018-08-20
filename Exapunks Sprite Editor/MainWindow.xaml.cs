@@ -26,7 +26,7 @@ namespace Exapunks_Sprite_Editor
         private List<List<PixelState>> _frames;
         private int _currentFrame = 0;
 
-        private Version _version = new Version(0, 2, 1);
+        private Version _version = new Version(0, 2, 3);
 
         private DispatcherTimer _animationTimer = new DispatcherTimer();
         private int _animationFrame;
@@ -146,6 +146,21 @@ namespace Exapunks_Sprite_Editor
                 ReadFrame(_currentFrame);
         }
 
+        private void DuplicateFrame(object sender, RoutedEventArgs e)
+        {
+            var newFrame = new List<PixelState>();
+            foreach (var pixel in _frames[_currentFrame])
+            {
+                var nps = new PixelState(pixel.Row, pixel.Column);
+                nps.Activated = pixel.Activated;
+                newFrame.Add(nps);
+            }
+            _frames.Insert(_currentFrame, newFrame);
+            _currentFrame++;
+
+            UpdateFrameText();
+        }
+
         private void CreateNewFrame()
         {
             var newFrame = new List<PixelState>();
@@ -202,6 +217,7 @@ namespace Exapunks_Sprite_Editor
             else
             {
                 _animationTimer.Stop();
+                ReadFrame(_currentFrame);
             }
         }
 
@@ -229,6 +245,8 @@ namespace Exapunks_Sprite_Editor
                 else
                     ToggleAnimationPlay();
             }
+
+            FrameText.Content = $"Frame: {_animationFrame + 1}/{_frames.Count}";
         }
     }
 }
