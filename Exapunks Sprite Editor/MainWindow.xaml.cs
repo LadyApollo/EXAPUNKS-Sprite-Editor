@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Exapunks_Sprite_Editor
 {
@@ -24,7 +26,11 @@ namespace Exapunks_Sprite_Editor
         private List<List<PixelState>> _frames;
         private int _currentFrame = 0;
 
-        private Version _version = new Version(0, 1, 1);
+        private Version _version = new Version(0, 2, 1);
+
+        private DispatcherTimer _animationTimer = new DispatcherTimer();
+        private int _animationFrame;
+
 
         public MainWindow()
         {
@@ -32,7 +38,9 @@ namespace Exapunks_Sprite_Editor
             _frames = new List<List<PixelState>>();
             GenerateFirstFrame();
 
+            _animationTimer.Tick += new EventHandler(UpdateAnimation);
             Title += " " + _version.ToString();
+
         }
 
         private void GenerateFirstFrame()
@@ -167,6 +175,60 @@ namespace Exapunks_Sprite_Editor
         private void UpdateFrameText()
         {
             FrameText.Content = $"Frame: {_currentFrame + 1}/{_frames.Count}";
+        }
+
+        private void PlayAnimation(object sender, RoutedEventArgs e)
+        {
+            ToggleAnimationPlay();
+        }
+
+        private void ToggleAnimationPlay()
+        {
+            if (_frames.Count <= 1)
+                return;
+
+            var willPlay = PlayButton.Content.ToString() == "Play";
+            PlayButton.Content = willPlay ? "Stop" : "Play";
+
+            LockControls(willPlay);
+
+            if (willPlay)
+            {
+                var tickInterval = (int)(1 / Convert.ToSingle(Frequency.Text) * 1000);
+                _animationTimer.Interval = TimeSpan.FromMilliseconds(tickInterval);
+                _animationTimer.Start();
+                _animationFrame = 0;
+            }
+            else
+            {
+                _animationTimer.Stop();
+            }
+        }
+
+        private void LockControls(bool value)
+        {
+            foreach (var pixel in _editorPixels)
+                pixel.SetLock(value);
+
+            Frequency.IsEnabled = !value;
+            DeleteFrameBT.IsEnabled = !value;
+            NextFrameBT.IsEnabled = !value;
+            PreviousFrameBT.IsEnabled = !value;
+            ImportFramesBT.IsEnabled = !value;
+        }
+
+        private void UpdateAnimation(object sender, EventArgs e)
+        {           
+            ReadFrame(_animationFrame);
+
+            _animationFrame++;
+            if (_animationFrame + 1 > _frames.Count)
+            {
+                if (LoopAnimation.IsChecked.Value)
+                    _animationFrame = 0;
+                else
+                    ToggleAnimationPlay();
+            }
         }
     }
 }

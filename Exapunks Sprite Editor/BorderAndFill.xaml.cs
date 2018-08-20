@@ -21,8 +21,9 @@ namespace Exapunks_Sprite_Editor
     public partial class BorderAndFill : UserControl
     {
         public PixelState PixelState { get; private set; }
-
         private Brush _originalBrush;
+
+        private bool _lockInput;
 
         public BorderAndFill(int row, int column)
         {
@@ -33,7 +34,14 @@ namespace Exapunks_Sprite_Editor
 
         private void Click(object sender, RoutedEventArgs e)
         {
+            if (_lockInput) return;
             SetActivated(!PixelState.Activated);
+        }
+
+        public void SetLock(bool value)
+        {
+            _lockInput = value;
+            //myButton.IsEnabled = value;
         }
 
         public void SetActivated(bool activated)

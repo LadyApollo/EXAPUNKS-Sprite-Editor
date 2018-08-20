@@ -5,12 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Exapunks_Sprite_Editor"
         mc:Ignorable="d"
-        Title="EXAPUNKS SPRITE EDITOR" Height="455" Width="750" MinHeight="455" MinWidth="750">
+        Title="EXAPUNKS SPRITE EDITOR" Height="495" Width="750" MinHeight="495" MinWidth="750">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3.5*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
         <Border BorderBrush="Black" BorderThickness="0.5">
             <Grid x:Name="myGrid">
                 <Grid.ColumnDefinitions>
@@ -66,14 +70,18 @@
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Content="&gt;" Grid.Column="3" FontFamily="Segoe Keycaps" FontWeight="Bold" FontSize="24" BorderBrush="{x:Null}" Background="{x:Null}" Click="NextFrame"/>
-                <Button Content="&lt;" Grid.Column="1" FontSize="24" FontFamily="Segoe Keycaps" FontWeight="Bold" BorderBrush="{x:Null}" Background="{x:Null}" Click="PreviousFrame"/>
+                <Button x:Name="NextFrameBT" Content="&gt;" Grid.Column="3" FontFamily="Segoe Keycaps" FontWeight="Bold" FontSize="24" BorderBrush="{x:Null}" Background="{x:Null}" Click="NextFrame"/>
+                <Button x:Name="PreviousFrameBT" Content="&lt;" Grid.Column="1" FontSize="24" FontFamily="Segoe Keycaps" FontWeight="Bold" BorderBrush="{x:Null}" Background="{x:Null}" Click="PreviousFrame"/>
             </Grid>
             <Label x:Name="FrameText" Content="Frame 1/1" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button Content="Delete Frame" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="8" VerticalAlignment="Center" Click="DeleteFrame"/>
+            <Button x:Name="DeleteFrameBT" Content="Delete Frame" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="8" VerticalAlignment="Center" Click="DeleteFrame"/>
             <TextBox x:Name="DataString" Grid.Row="3" Text="DATA 000 010 020 030 040&#xD;&#xA;DATA 050 060 070 080 090&#xD;&#xA;DATA 001 011 021 031 041&#xD;&#xA;DATA 051 061 071 081 091&#xD;&#xA;DATA 002 012 122 132 042&#xD;&#xA;DATA 052 062 172 082 092&#xD;&#xA;DATA 003 113 023 033 143&#xD;&#xA;DATA 053 063 073 083 093&#xD;&#xA;DATA 004 114 024 034 144&#xD;&#xA;DATA 054 064 174 084 094&#xD;&#xA;DATA 005 115 025 035 145&#xD;&#xA;DATA 055 065 175 085 095&#xD;&#xA;DATA 006 116 026 036 146&#xD;&#xA;DATA 056 066 176 086 096&#xD;&#xA;DATA 007 117 027 037 147&#xD;&#xA;DATA 057 067 177 087 097&#xD;&#xA;DATA 008 018 128 138 048&#xD;&#xA;DATA 058 068 178 088 098&#xD;&#xA;DATA 009 019 029 039 049&#xD;&#xA;DATA 059 069 079 089 099&#xD;&#xA;" Grid.Column="1" FontSize="8" CaretBrush="#FF917C7C" TextWrapping="WrapWithOverflow" AcceptsReturn="True" HorizontalAlignment="Center" Width="102" Margin="11,1,10,0"/>
             <Button Content="Export Frames" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="4" VerticalAlignment="Center" Click="ExportFrames"/>
-            <Button Content="Import Frames" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Center" Click="ImportFrames"/>
+            <Button x:Name="ImportFramesBT" Content="Import Frames" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Center" Click="ImportFrames"/>
         </Grid>
+        <Button x:Name="PlayButton" Content="Play" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="76" Click="PlayAnimation"/>
+        <CheckBox x:Name="LoopAnimation" Content="Loop Animation" HorizontalAlignment="Left" Margin="166,12,0,10" Grid.Row="1" Width="110" IsChecked="True"/>
+        <TextBox x:Name="Frequency" HorizontalAlignment="Left" Height="20" Margin="98,10,0,0" Grid.Row="1" TextAlignment="Right" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="38"/>
+        <TextBlock HorizontalAlignment="Left" Margin="138,12,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Hz" VerticalAlignment="Top" Height="18" Width="28"/>
     </Grid>
 </Window>
